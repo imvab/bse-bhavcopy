@@ -26,7 +26,9 @@ SECRET_KEY = 'x#7d)--in&n+j*=b1n89(804&a^8hs-24#p0k1vxegx#j*32^^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'https://bse-bhavcopy.herokuapp.com/'
+]
 
 
 # Application definition
