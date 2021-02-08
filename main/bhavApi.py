@@ -14,7 +14,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 def start():
     sched = BackgroundScheduler(daemon=True)
     # sched.add_job(fetchCSV, 'cron', minute='*')
-    sched.add_job(fetchCSV, 'cron', hour='12', minute='30')
+    sched.add_job(fetchCSV, 'cron', hour='12', minute='30', day_of_week='mon-fri')
     sched.start()
 
 
