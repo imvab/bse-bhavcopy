@@ -4,18 +4,18 @@ import io
 import zipfile
 import requests
 import os
-# import redis
 import json
 import time
 
 from datetime import datetime
-from apscheduler.scheduler import Scheduler
+from apscheduler.schedulers.background import BackgroundScheduler
 
 
 def start():
-    scheduler = Scheduler()
-    scheduler.add_cron_job(fetchCSV, day_of_week='mon-fri', hour=12, minute=39)
-    scheduler.start()
+    sched = BackgroundScheduler(daemon=True)
+    # sched.add_job(fetchCSV, 'cron', minute='*')
+    sched.add_job(fetchCSV, 'cron', hour='12', minute='30')
+    sched.start()
 
 
 def fetchCSV():
@@ -47,9 +47,6 @@ def fetchCSV():
         stock = models.Stock(
             code=row[0], name=row[1].strip(), open=row[4], high=row[5], low=row[6], close=row[7])
         stock.save()
+    os.remove("EQ" + today[0:4] + today[6:] + ".CSV")
 
-    # "equity-bhavcopy-%s%s%s" # % (day, month, year)
-    # key = "equity-bhavcopy-050221"
-    # conn.set(key, json.dumps(data))
-
-    return r
+    return
