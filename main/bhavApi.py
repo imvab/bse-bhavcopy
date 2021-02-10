@@ -14,7 +14,8 @@ from apscheduler.schedulers.background import BackgroundScheduler
 def start():
     sched = BackgroundScheduler(daemon=True)
     # sched.add_job(fetchCSV, 'cron', minute='*')
-    sched.add_job(fetchCSV, 'cron', hour='12', minute='30', day_of_week='mon-fri')
+    sched.add_job(fetchCSV, 'cron', hour='12', minute='30',
+                  day_of_week='mon-fri')  # UTC to IST
     sched.start()
 
 
@@ -25,14 +26,15 @@ def fetchCSV():
     today = date.today().strftime("%d%m%Y")
     url = "https://www.bseindia.com/download/BhavCopy/Equity/EQ" + \
         today[0:4] + today[6:] + "_CSV.ZIP"
-    # url = "https://www.bseindia.com/download/BhavCopy/Equity/EQ050221_CSV.ZIP"
+    # url = "https://www.bseindia.com/download/BhavCopy/Equity/EQ090221_CSV.ZIP"
+    print(url)
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
     r = requests.get(url, headers=headers)
     z = zipfile.ZipFile(io.BytesIO(r.content))
     z.extractall()
     print('Fetched')
-
+    # csv_file_url = 'EQ090221.CSV'
     csv_file_url = "EQ" + today[0:4] + today[6:] + ".CSV"
     csv_file = open(csv_file_url)
     csv_file_text = csv_file.read()
